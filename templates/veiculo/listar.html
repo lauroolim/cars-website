@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center my-4">Lista de Veículos</h1>
+
+    <p class="lead text-center">Total de veículos: {{ veiculos|length }}</p>
+
+    <div class="card">
+        <div class="card-body">
+            <ul class="list-group">
+                {% for veiculo in veiculos %}
+                <li class="list-group-item">
+                    <strong>{{ veiculo.marca }}</strong> - {{ veiculo.modelo }} <br>
+                    {% if veiculo.foto %}
+                    <img src="{{ veiculo.foto.url }}" alt="Foto de {{ veiculo.marca }}" class="img-thumbnail"
+                        style="width: 100px; height: auto;">
+                    {% else %}
+                    <span class="text-muted">Nenhuma foto disponível</span>
+                    {% endif %}
+                </li>
+                {% empty %}
+                <li class="list-group-item list-group-item-danger">Nenhum veículo encontrado.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
