@@ -1,29 +1,32 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container">
-    <h1 class="text-center my-4">Lista de Veículos</h1>
+<h1 class="mb-4">Lista de Veículos</h1>
 
-    <p class="lead text-center">Total de veículos: {{ veiculos|length }}</p>
-
-    <div class="card">
-        <div class="card-body">
-            <ul class="list-group">
-                {% for veiculo in veiculos %}
-                <li class="list-group-item">
-                    <strong>{{ veiculo.marca }}</strong> - {{ veiculo.modelo }} <br>
-                    {% if veiculo.foto %}
-                    <img src="{{ veiculo.foto.url }}" alt="Foto de {{ veiculo.marca }}" class="img-thumbnail"
-                        style="width: 100px; height: auto;">
-                    {% else %}
-                    <span class="text-muted">Nenhuma foto disponível</span>
-                    {% endif %}
-                </li>
-                {% empty %}
-                <li class="list-group-item list-group-item-danger">Nenhum veículo encontrado.</li>
-                {% endfor %}
-            </ul>
+<div class="row">
+    {% for veiculo in veiculos %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            {% if veiculo.foto %}
+            <img src="{{ veiculo.foto.url }}" class="card-img-top" alt="{{ veiculo.modelo }}"
+                style="height: 200px; object-fit: cover;">
+            {% else %}
+            <img src="{% static 'path/to/default/image.jpg' %}" class="card-img-top" alt="Imagem padrão"
+                style="height: 200px; object-fit: cover;">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ veiculo.get_marca_display }} {{ veiculo.modelo }}</h5>
+                <p class="card-text">
+                    <strong>Ano:</strong> {{ veiculo.ano }}<br>
+                    <strong>Cor:</strong> {{ veiculo.get_cor_display }}<br>
+                    <strong>Combustível:</strong> {{ veiculo.get_combustivel_display }}
+                </p>
+                <a href="{% url 'editar-veiculos' veiculo.id %}" class="btn btn-primary btn-sm">Editar</a>
+                <a href="{% url 'excluir-veiculos' veiculo.id %}" class="btn btn-danger btn-sm">Excluir</a>
+            </div>
         </div>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
